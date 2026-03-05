@@ -14,7 +14,7 @@ const userRoutes = require('./src/routes/userRoutes');
 const adminRoutes = require('./src/routes/adminRoutes');
 const priceMartRoutes = require('./src/routes/priceMartRoutes');
 const schedulerRoutes = require('./src/routes/schedulerRoutes');
-const razorpayRoutes = require('./src/routes/razorpayRoutes');
+
 const utilityRoutes = require('./src/routes/utilityRoutes');
 const userHistoryRoutes = require('./src/routes/userHistory');
 const prizeClaimRoutes = require('./src/routes/prizeClaim');
@@ -56,11 +56,11 @@ allowedOrigins = [...new Set([...allowedOrigins, ...productionDomains])];
 
 const isLocalNetwork = (hostname) => {
   return hostname === 'localhost' ||
-         hostname === '127.0.0.1' ||
-         hostname.startsWith('192.168.') ||
-         hostname.startsWith('10.') ||
-         hostname.startsWith('172.16.') || hostname.startsWith('172.17.') || hostname.startsWith('172.18.') || hostname.startsWith('172.19.') ||
-         hostname.startsWith('172.2') // covers 172.20 - 172.31 roughly
+    hostname === '127.0.0.1' ||
+    hostname.startsWith('192.168.') ||
+    hostname.startsWith('10.') ||
+    hostname.startsWith('172.16.') || hostname.startsWith('172.17.') || hostname.startsWith('172.18.') || hostname.startsWith('172.19.') ||
+    hostname.startsWith('172.2') // covers 172.20 - 172.31 roughly
 };
 
 const isOrchidsPage = (hostname) => {
@@ -148,8 +148,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 console.log(
-  `📘 Swagger Docs available at: ${
-    process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 5000}`
+  `📘 Swagger Docs available at: ${process.env.API_BASE_URL || `http://localhost:${process.env.PORT || 5000}`
   }/api-docs`
 );
 
@@ -162,7 +161,7 @@ app.use('/admin', adminRoutes);
 app.use('/admin/emails', emailRoutes);
 app.use('/priceMart', priceMartRoutes);
 app.use('/scheduler', schedulerRoutes);
-app.use('/api/razorpay', razorpayRoutes);
+
 app.use('/utility', utilityRoutes);
 app.use('/user', userHistoryRoutes);
 app.use('/prize-claim', prizeClaimRoutes);
@@ -180,7 +179,7 @@ let schedulerJobs = null;
 connectDB()
   .then(() => {
     console.log(`✅ MongoDB connected successfully`);
-    
+
     // ✅ Wait a moment for connection to stabilize before initializing scheduler
     setTimeout(() => {
       if (isConnected()) {
@@ -190,7 +189,7 @@ connectDB()
         console.error('⚠️ MongoDB not connected, scheduler initialization delayed');
       }
     }, 2000);
-    
+
     // Graceful shutdown handler with Promise-based mongoose close
     process.on('SIGINT', async () => {
       console.log('\n🛑 Received SIGINT signal. Shutting down gracefully...');
@@ -206,7 +205,7 @@ connectDB()
         process.exit(1);
       }
     });
-    
+
     process.on('SIGTERM', async () => {
       console.log('\n🛑 Received SIGTERM signal. Shutting down gracefully...');
       if (schedulerJobs) {
@@ -250,7 +249,7 @@ app.get('/health', (req, res) => {
     2: 'connecting',
     3: 'disconnecting'
   };
-  
+
   res.status(dbState === 1 ? 200 : 503).json({
     status: dbState === 1 ? 'healthy' : 'unhealthy',
     database: {

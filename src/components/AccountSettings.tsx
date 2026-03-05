@@ -50,7 +50,7 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
   const [smsAlerts, setSmsAlerts] = useState(false);
   const [bidAlerts, setBidAlerts] = useState(false);
   const [winNotifications, setWinNotifications] = useState(false);
-  
+
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage] = useState('');
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -84,7 +84,7 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
         setUserDataError(null);
 
         const userId = localStorage.getItem('user_id');
-        
+
         if (!userId) {
           throw new Error('User ID not found in localStorage');
         }
@@ -106,7 +106,7 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
 
         if (data && data.user) {
           const userData = data.user;
-          
+
           setFullName(userData.username || userData.name || '');
           setEmail(userData.email || '');
           setPhone(formatIndianMobile(userData.mobile || userData.phone || ''));
@@ -302,7 +302,7 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
   if (userDataError) {
     return (
       <div className="min-h-screen bg-white relative overflow-hidden">
-        
+
         <div className="flex items-center justify-center min-h-screen relative z-10 px-4">
           <motion.div
             className="text-center space-y-4 max-w-md"
@@ -337,8 +337,8 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
 
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      
-      <motion.header 
+
+      <motion.header
         className="bg-white/95 backdrop-blur-md border-b border-purple-200 shadow-sm sticky top-0 z-50"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -362,8 +362,8 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
                 <h1 className="text-lg font-bold text-purple-800">Account Settings</h1>
               </div>
             </div>
-            
-            <div 
+
+            <div
               className="flex items-center space-x-2 cursor-pointer"
               onClick={onBack}
             >
@@ -372,14 +372,14 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
               </div>
               <div className="hidden sm:block">
                 <h2 className="text-lg font-bold bg-gradient-to-r from-[#53317B] via-[#6B3FA0] to-[#8456BC] bg-clip-text text-transparent">Dream60</h2>
-                <p className="text-[10px] text-purple-600">Live Auction Play</p>
+                <p className="text-[10px] text-purple-600">Live Auction Platform</p>
               </div>
             </div>
           </div>
         </div>
       </motion.header>
 
-      <motion.div 
+      <motion.div
         className="flex sm:hidden items-center space-x-2 mb-4 px-3 pt-4"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -645,7 +645,7 @@ export function AccountSettings({ user, onBack, onNavigate, onDeleteAccount, onL
                 transition={{ delay: 0.3 }}
                 className="mt-4 pt-4 border-t border-purple-200/50"
               >
-                <NotificationPermissionCard 
+                <NotificationPermissionCard
                   userId={localStorage.getItem('user_id') || undefined}
                   showTitle={false}
                 />

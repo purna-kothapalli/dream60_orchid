@@ -9,6 +9,7 @@ const {
   deleteMe,
   updateMobile,
   syncAllUserStats,
+  getUserByMobile,
 } = require('../controllers/userController');
 
 /**
@@ -559,5 +560,47 @@ router.put('/updateUserDetails', ensureUserId, updateMobile);
  *         description: Server error
  */
 router.post('/sync-user-stats', syncAllUserStats);
+
+/**
+ * @swagger
+ * /auth/user/mobile/{mobile}:
+ *   get:
+ *     summary: Get complete user details by mobile number
+ *     description: |
+ *       Fetches complete user details including profile information and statistics using mobile number.
+ *       
+ *       **Use this endpoint to:**
+ *       - Find user by their mobile number
+ *       - Get user statistics and profile
+ *     tags: [Users]
+ *     parameters:
+ *       - name: mobile
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User mobile number
+ *         example: "9876543210"
+ *     responses:
+ *       200:
+ *         description: User details fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 user:
+ *                   $ref: '#/components/schemas/UserProfile'
+ *       400:
+ *         description: Missing or invalid mobile number
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.get('/user/mobile/:mobile', getUserByMobile);
 
 module.exports = router;

@@ -79,35 +79,35 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
         setIsLoading(true);
         const queryString = buildQueryString({ hourlyAuctionId, userId });
         const response = await fetch(`${API_ENDPOINTS.scheduler.auctionLeaderboard}${queryString}`);
-          const data = await response.json();
+        const data = await response.json();
 
-          if (response.ok && data.success) {
-              const normalizedWinners: WinnerData[] = (data.auction?.winners || []).map((winner: any) => {
-                const status = winner?.prizeClaimStatus || (winner?.isPrizeClaimed ? 'CLAIMED' : undefined);
-                const isClaimed = status === 'CLAIMED';
+        if (response.ok && data.success) {
+          const normalizedWinners: WinnerData[] = (data.auction?.winners || []).map((winner: any) => {
+            const status = winner?.prizeClaimStatus || (winner?.isPrizeClaimed ? 'CLAIMED' : undefined);
+            const isClaimed = status === 'CLAIMED';
 
-                return {
-                  ...winner,
-                  prizeClaimStatus: status,
-                  isPrizeClaimed: isClaimed,
-                  prizeClaimedBy: winner?.prizeClaimedBy || null,
-                  claimNotes: winner?.claimNotes || null,
-                } as WinnerData;
-              });
+            return {
+              ...winner,
+              prizeClaimStatus: status,
+              isPrizeClaimed: isClaimed,
+              prizeClaimedBy: winner?.prizeClaimedBy || null,
+              claimNotes: winner?.claimNotes || null,
+            } as WinnerData;
+          });
 
 
-            if (data.auction) {
-              setAuction({ ...data.auction, winners: normalizedWinners });
-            } else {
-              setAuction(null);
-            }
-            setRounds(data.rounds || []);
+          if (data.auction) {
+            setAuction({ ...data.auction, winners: normalizedWinners });
           } else {
-            setError(data.message || 'Failed to load leaderboard');
-            if (!data.isParticipant) {
-              toast.error('You did not participate in this auction');
-            }
+            setAuction(null);
           }
+          setRounds(data.rounds || []);
+        } else {
+          setError(data.message || 'Failed to load leaderboard');
+          if (!data.isParticipant) {
+            toast.error('You did not participate in this auction');
+          }
+        }
 
       } catch (err) {
         console.error('Error fetching leaderboard:', err);
@@ -127,44 +127,44 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
     const doc = new jsPDF();
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
-    
+
     doc.setFillColor(250, 245, 255);
     doc.rect(0, 0, pageWidth, pageHeight, 'F');
-    
+
     doc.setFillColor(107, 63, 160);
     doc.rect(0, 0, pageWidth, 35, 'F');
-    
+
     doc.setFontSize(20);
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
     doc.text(`DREAM60 - ${auction?.auctionName || 'Auction'}`, pageWidth / 2, 15, { align: 'center' });
-    
+
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text(`Round ${roundNumber} Leaderboard`, pageWidth / 2, 25, { align: 'center' });
-    
+
     let yPos = 45;
     doc.setFillColor(255, 255, 255);
     doc.roundedRect(15, yPos, pageWidth - 30, 25, 3, 3, 'F');
-    
+
     doc.setFontSize(10);
     doc.setTextColor(107, 63, 160);
     doc.setFont('helvetica', 'bold');
-    
+
     doc.text('Total Players:', 20, yPos + 10);
     doc.text(`${round.totalParticipants}`, 55, yPos + 10);
-    
+
     doc.text('Qualified:', 100, yPos + 10);
     doc.text(`${round.qualifiedCount}`, 125, yPos + 10);
-    
+
     doc.text('Status:', 150, yPos + 10);
     doc.text(`${round.status}`, 170, yPos + 10);
-    
+
     yPos += 35;
-    
+
     doc.setFillColor(147, 51, 234);
     doc.rect(15, yPos, pageWidth - 30, 10, 'F');
-    
+
     doc.setFontSize(9);
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
@@ -172,9 +172,9 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
     doc.text('Username', 45, yPos + 7);
     doc.text('Bid Amount', 120, yPos + 7);
     doc.text('Qualified', 170, yPos + 7);
-    
+
     yPos += 10;
-    
+
     round.leaderboard.forEach((entry, idx) => {
       if (yPos > pageHeight - 35) {
         doc.addPage();
@@ -182,7 +182,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
         doc.rect(0, 0, pageWidth, pageHeight, 'F');
         yPos = 20;
       }
-      
+
       if (idx % 2 === 0) {
         doc.setFillColor(255, 255, 255);
         doc.rect(15, yPos, pageWidth - 30, 8, 'F');
@@ -190,49 +190,49 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
         doc.setFillColor(250, 245, 255);
         doc.rect(15, yPos, pageWidth - 30, 8, 'F');
       }
-      
+
       doc.setFontSize(8);
       doc.setFont('helvetica', entry.rank <= 3 ? 'bold' : 'normal');
-      
+
       if (entry.rank <= 3) {
         const rankColors = [[147, 51, 234], [126, 34, 206], [107, 33, 168]];
         doc.setTextColor(...rankColors[entry.rank - 1]);
       } else {
         doc.setTextColor(75, 85, 99);
       }
-      
+
       doc.text(entry.rank.toString(), 25, yPos + 6);
-      
+
       doc.setTextColor(31, 41, 55);
       const username = entry.playerUsername.length > 25 ? entry.playerUsername.substring(0, 25) + '...' : entry.playerUsername;
       doc.text(username + (entry.isCurrentUser ? ' (You)' : ''), 45, yPos + 6);
-      
+
       doc.setTextColor(107, 63, 160);
       doc.setFont('helvetica', 'bold');
       doc.text(`Rs ${entry.bidAmount.toLocaleString('en-IN')}`, 120, yPos + 6);
-      
+
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(entry.isQualified ? 34 : 185, entry.isQualified ? 197 : 28, entry.isQualified ? 94 : 28);
       doc.text(entry.isQualified ? 'Yes' : 'No', 175, yPos + 6);
-      
+
       yPos += 8;
     });
-    
+
     doc.setFillColor(107, 63, 160);
     doc.rect(0, pageHeight - 25, pageWidth, 25, 'F');
-    
+
     doc.setFontSize(8);
     doc.setTextColor(255, 255, 255);
     doc.setFont('helvetica', 'bold');
     doc.text('All rights reserved to dream60.com', pageWidth / 2, pageHeight - 17, { align: 'center' });
-    
+
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.text('Terms and conditions applicable', pageWidth / 2, pageHeight - 12, { align: 'center' });
-    
+
     doc.setFontSize(7);
     doc.text(`Generated on ${new Date().toLocaleString('en-IN')}`, pageWidth / 2, pageHeight - 6, { align: 'center' });
-    
+
     doc.save(`Dream60_${auction?.hourlyAuctionCode || 'Auction'}_Round${roundNumber}_Leaderboard.pdf`);
     toast.success(`Round ${roundNumber} leaderboard downloaded as PDF`);
   };
@@ -278,7 +278,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-violet-50">
       {/* Header with Logo */}
-      <motion.header 
+      <motion.header
         className="bg-white/95 backdrop-blur-md border-b border-purple-200 shadow-sm sticky top-0 z-50"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -302,9 +302,9 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                 <h1 className="text-lg font-bold text-purple-800">Auction Leaderboard</h1>
               </div>
             </div>
-            
+
             {/* Logo */}
-            <div 
+            <div
               className="flex items-center space-x-2 cursor-pointer"
               onClick={onBack}
             >
@@ -313,7 +313,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
               </div>
               <div className="hidden sm:block">
                 <h2 className="text-lg font-bold bg-gradient-to-r from-[#53317B] via-[#6B3FA0] to-[#8456BC] bg-clip-text text-transparent">Dream60</h2>
-                <p className="text-[10px] text-purple-600">Live Auction Play</p>
+                <p className="text-[10px] text-purple-600">Live Auction Platform</p>
               </div>
             </div>
           </div>
@@ -322,7 +322,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
 
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Mobile Title */}
-        <motion.div 
+        <motion.div
           className="flex sm:hidden items-center space-x-2 mb-4"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -340,7 +340,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
           >
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
               <div className="w-24 h-24 rounded-2xl overflow-hidden border-2 border-purple-300/60 shadow-md shrink-0">
-                <ImageWithFallback 
+                <ImageWithFallback
                   src={auction.imageUrl}
                   alt={auction.auctionName}
                   className="w-full h-full object-cover"
@@ -380,19 +380,18 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {auction.winners.map((winner) => (
-                    <div 
+                    <div
                       key={winner.rank}
-                      className={`rounded-xl p-3 border-2 ${
-                        winner.rank === 1 
-                          ? 'bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-300' 
+                      className={`rounded-xl p-3 border-2 ${winner.rank === 1
+                          ? 'bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-300'
                           : winner.rank === 2
-                          ? 'bg-gradient-to-r from-gray-50 to-slate-50 border-gray-300'
-                          : winner.rank === 3
-                          ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300'
-                          : winner.isCurrentUser 
-                          ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-300' 
-                          : 'bg-purple-50/80 border-purple-200/60'
-                      }`}
+                            ? 'bg-gradient-to-r from-gray-50 to-slate-50 border-gray-300'
+                            : winner.rank === 3
+                              ? 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-300'
+                              : winner.isCurrentUser
+                                ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-300'
+                                : 'bg-purple-50/80 border-purple-200/60'
+                        }`}
                     >
                       <div className="flex items-center gap-2">
                         {getRankIcon(winner.rank)}
@@ -410,40 +409,39 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                         <IndianRupee className="w-3 h-3" />
                         Prize: {winner.prizeAmount.toLocaleString('en-IN')}
                       </div>
-                        <div className={`text-xs mt-2 flex items-center gap-1 ${
-                          winner.prizeClaimStatus === 'CLAIMED'
-                            ? 'text-green-600'
-                            : winner.prizeClaimStatus === 'CANCELLED' || winner.prizeClaimStatus === 'EXPIRED'
+                      <div className={`text-xs mt-2 flex items-center gap-1 ${winner.prizeClaimStatus === 'CLAIMED'
+                          ? 'text-green-600'
+                          : winner.prizeClaimStatus === 'CANCELLED' || winner.prizeClaimStatus === 'EXPIRED'
                             ? 'text-orange-600'
                             : 'text-purple-600'
                         }`}>
-                          {winner.prizeClaimStatus === 'CLAIMED' ? (
-                            <>
-                              <Gift className="w-3 h-3" />
-                              Claimed by {winner.prizeClaimedBy || winner.playerUsername}
-                            </>
-                          ) : winner.prizeClaimStatus === 'CANCELLED' ? (
-                            <>
-                              <AlertCircle className="w-3 h-3" />
-                              Claim cancelled
-                            </>
-                          ) : winner.prizeClaimStatus === 'EXPIRED' ? (
-                            <>
-                              <AlertCircle className="w-3 h-3" />
-                              Claim expired
-                            </>
-                          ) : (
-                            <>
-                              <AlertCircle className="w-3 h-3" />
-                              Prize not claimed yet
-                            </>
-                          )}
-                        </div>
+                        {winner.prizeClaimStatus === 'CLAIMED' ? (
+                          <>
+                            <Gift className="w-3 h-3" />
+                            Claimed by {winner.prizeClaimedBy || winner.playerUsername}
+                          </>
+                        ) : winner.prizeClaimStatus === 'CANCELLED' ? (
+                          <>
+                            <AlertCircle className="w-3 h-3" />
+                            Claim cancelled
+                          </>
+                        ) : winner.prizeClaimStatus === 'EXPIRED' ? (
+                          <>
+                            <AlertCircle className="w-3 h-3" />
+                            Claim expired
+                          </>
+                        ) : (
+                          <>
+                            <AlertCircle className="w-3 h-3" />
+                            Prize not claimed yet
+                          </>
+                        )}
+                      </div>
 
                     </div>
                   ))}
                 </div>
-                
+
                 {/* Sorry message for non-winners */}
                 {!auction.winners.some(w => w.isCurrentUser) && (
                   <div className="mt-4 p-4 bg-gradient-to-r from-purple-100/60 to-violet-100/60 rounded-xl border border-purple-200/60">
@@ -454,7 +452,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                       <div>
                         <p className="font-semibold text-purple-900">Better luck next time!</p>
                         <p className="text-sm text-purple-600 mt-1">
-                          You participated in this auction but didn't make it to the top 3 winners. 
+                          You participated in this auction but didn't make it to the top 3 winners.
                           Keep trying, your winning moment is just around the corner!
                         </p>
                       </div>
@@ -476,7 +474,7 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
           {[1, 2, 3, 4].map((roundNum) => {
             const round = rounds.find(r => r.roundNumber === roundNum);
             const hasData = round && round.leaderboard.length > 0;
-            
+
             return (
               <motion.div
                 key={roundNum}
@@ -494,13 +492,12 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                       Round {roundNum}
                     </h3>
                     {round && (
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        round.status === 'COMPLETED' 
-                          ? 'bg-green-100 text-green-700' 
+                      <span className={`text-xs px-2 py-1 rounded-full ${round.status === 'COMPLETED'
+                          ? 'bg-green-100 text-green-700'
                           : round.status === 'ACTIVE'
-                          ? 'bg-yellow-100 text-yellow-700'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}>
+                            ? 'bg-yellow-100 text-yellow-700'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}>
                         {round.status}
                       </span>
                     )}
@@ -528,16 +525,16 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                           <Eye className="w-4 h-4 mr-1" />
                           {expandedRound === roundNum ? 'Hide' : 'View'} Leaderboard
                         </Button>
-                          <Button
-                            onClick={() => downloadLeaderboard(roundNum)}
-                            size="sm"
-                            variant="outline"
-                            className="flex-1 text-violet-700 border-violet-300 hover:bg-violet-50"
-                            data-tutorial-target="download-leaderboard"
-                          >
-                            <Download className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
+                        <Button
+                          onClick={() => downloadLeaderboard(roundNum)}
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 text-violet-700 border-violet-300 hover:bg-violet-50"
+                          data-tutorial-target="download-leaderboard"
+                        >
+                          <Download className="w-4 h-4 mr-1" />
+                          Download
+                        </Button>
 
                       </div>
 
@@ -551,13 +548,12 @@ export function AuctionLeaderboard({ hourlyAuctionId, userId, onBack }: AuctionL
                         >
                           <div className="max-h-64 overflow-y-auto space-y-2">
                             {round.leaderboard.map((entry) => (
-                              <div 
+                              <div
                                 key={entry.playerId}
-                                className={`flex items-center justify-between p-2 rounded-xl text-sm ${
-                                  entry.isCurrentUser 
-                                    ? 'bg-gradient-to-r from-purple-100 to-violet-100 border border-purple-300' 
+                                className={`flex items-center justify-between p-2 rounded-xl text-sm ${entry.isCurrentUser
+                                    ? 'bg-gradient-to-r from-purple-100 to-violet-100 border border-purple-300'
                                     : 'bg-gray-50'
-                                }`}
+                                  }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {getRankIcon(entry.rank)}

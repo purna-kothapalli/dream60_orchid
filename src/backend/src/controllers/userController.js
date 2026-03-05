@@ -52,28 +52,28 @@ const syncUserStats = async (userId) => {
 
     // Get aggregated stats from AuctionHistory
     const stats = await AuctionHistory.getUserStats(userId);
-    
+
     if (!stats) {
       console.log(`⚠️ [SYNC_USER_STATS] No stats found for user: ${userId}`);
       return null;
     }
 
-      // Update User model with aggregated stats
-      const updatedUser = await User.findOneAndUpdate(
-        { user_id: userId },
-        {
-          $set: {
-            totalAuctions: stats.totalAuctions || 0,
-            totalWins: stats.totalWins || 0,
-            totalLosses: stats.totalLosses || 0,
-            totalAmountSpent: stats.totalSpent || 0,
-            totalAmountWon: stats.totalWon || 0,
-            winRate: stats.winRate || 0,
-            netGain: stats.netGain || 0,
-          }
-        },
-        { new: true }
-      );
+    // Update User model with aggregated stats
+    const updatedUser = await User.findOneAndUpdate(
+      { user_id: userId },
+      {
+        $set: {
+          totalAuctions: stats.totalAuctions || 0,
+          totalWins: stats.totalWins || 0,
+          totalLosses: stats.totalLosses || 0,
+          totalAmountSpent: stats.totalSpent || 0,
+          totalAmountWon: stats.totalWon || 0,
+          winRate: stats.winRate || 0,
+          netGain: stats.netGain || 0,
+        }
+      },
+      { new: true }
+    );
 
 
     if (updatedUser) {
@@ -105,7 +105,7 @@ const syncAllUserStats = async (req, res) => {
 
     // Get all users
     const users = await User.find({ isDeleted: { $ne: true } }).select('user_id username');
-    
+
     let updatedCount = 0;
     let errorCount = 0;
 
@@ -383,6 +383,45 @@ const updateMobile = async (req, res) => {
   }
 };
 
+/**
+ * GET /auth/user/mobile/:mobile
+ * Returns complete user details including profile info and statistics by mobile number
+ */
+const getUserByMobile = async (req, res) => {
+  try {
+    const { mobile } = req.params;
+    if (!mobile) return res.status(400).json({ success: false, message: 'mobile parameter is required' });
+
+    // Normalize mobile: remove non-digits
+    const normalizedMobile = mobile.replace(/\D/g, '');
+    if (!/^[0-9]{7,15}$/.test(normalizedMobile)) {
+      return res.status(400).json({ success: false, message: 'Invalid mobile number format' });
+    }
+
+    const user = await userRepo.findOne({ mobile: normalizedMobile, isDeleted: { $ne: true } });
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    const stats = {
+      totalAuctions: user.totalAuctions || 0,
+      totalWins: user.totalWins || 0,
+      totalLosses: user.totalLosses || 0,
+      totalSpent: user.totalAmountSpent || 0,
+      totalWon: user.totalAmountWon || 0,
+      winRate: user.winRate || 0,
+      netGain: user.netGain || 0,
+    };
+
+    const userData = {
+      ...sanitizeUser(user),
+      stats,
+    };
+
+    return res.json({ success: true, user: userData });
+  } catch (err) {
+    console.error('getUserByMobile error:', err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
 
 module.exports = {
   getAllUsers,
@@ -393,4 +432,5 @@ module.exports = {
   updateMobile,
   syncUserStats,
   syncAllUserStats,
+  getUserByMobile,
 };

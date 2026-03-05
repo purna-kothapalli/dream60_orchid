@@ -13,10 +13,10 @@ export function Rules({ onBack }: RulesProps) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      
-      
+
+
       {/* Header with Logo */}
-      <motion.header 
+      <motion.header
         className="bg-white/95 backdrop-blur-md border-b border-purple-200 shadow-sm sticky top-0 z-50"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -37,9 +37,9 @@ export function Rules({ onBack }: RulesProps) {
               <div className="w-px h-6 bg-purple-300 hidden sm:block"></div>
               <h1 className="hidden sm:block text-xl sm:text-2xl font-bold text-purple-800">Auction Rules</h1>
             </div>
-            
+
             {/* Logo */}
-            <div 
+            <div
               className="flex items-center space-x-2 cursor-pointer"
               onClick={onBack}
             >
@@ -48,7 +48,7 @@ export function Rules({ onBack }: RulesProps) {
               </div>
               <div className="hidden sm:block">
                 <h2 className="text-lg font-bold bg-gradient-to-r from-[#53317B] via-[#6B3FA0] to-[#8456BC] bg-clip-text text-transparent">Dream60</h2>
-                <p className="text-[10px] text-purple-600">Live Auction Play</p>
+                <p className="text-[10px] text-purple-600">Live Auction Platform</p>
               </div>
             </div>
           </div>
@@ -57,23 +57,23 @@ export function Rules({ onBack }: RulesProps) {
 
       <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 relative z-10">
         {/* Mobile Title */}
-        <motion.h1 
+        <motion.h1
           className="sm:hidden text-2xl font-bold text-purple-800 mb-6"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
           Auction Rules
         </motion.h1>
-        
-        <motion.div 
+
+        <motion.div
           className="max-w-4xl mx-auto space-y-4 sm:space-y-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-            {/* Introduction */}
-            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-300 shadow-lg relative overflow-hidden">
-              <CardHeader>
+          {/* Introduction */}
+          <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-300 shadow-lg relative overflow-hidden">
+            <CardHeader>
               <CardTitle className="text-base sm:text-lg md:text-xl text-purple-800 flex items-center space-x-2">
                 <Trophy className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 <span>Welcome to Dream60 India</span>
@@ -81,7 +81,7 @@ export function Rules({ onBack }: RulesProps) {
             </CardHeader>
             <CardContent className="text-purple-700 space-y-3 sm:space-y-4 text-sm sm:text-base">
               <p>
-                Dream60 is India's premier online auction platform where you compete in real-time for valuable prizes. 
+                Dream60 is India's premier online auction platform where you compete in real-time for valuable prizes.
                 Our system is transparent, fair, and exclusively uses Indian currency (₹).
               </p>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -90,9 +90,9 @@ export function Rules({ onBack }: RulesProps) {
                     <Sparkles className="w-4 h-4 mr-1" />
                     Daily Auctions
                   </div>
-                    <div className="text-xs sm:text-sm text-purple-600 space-y-1">
-                      <div>• premium hourly Auctions daily</div>
-                      <div>• Each auction lasts exactly 60 minutes</div>
+                  <div className="text-xs sm:text-sm text-purple-600 space-y-1">
+                    <div>• premium hourly Auctions daily</div>
+                    <div>• Each auction lasts exactly 60 minutes</div>
                     <div>• 2 entry boxes + 4 live bidding rounds</div>
                   </div>
                 </div>
@@ -112,9 +112,9 @@ export function Rules({ onBack }: RulesProps) {
             </CardContent>
           </Card>
 
-            {/* How It Works */}
-            <Card className="bg-white border-purple-200 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100 relative z-10">
+          {/* How It Works */}
+          <Card className="bg-white border-purple-200 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100 relative z-10">
               <CardTitle className="text-base sm:text-lg md:text-xl text-purple-800 flex items-center space-x-2">
                 <Target className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" />
                 <span>How It Works</span>
@@ -127,9 +127,9 @@ export function Rules({ onBack }: RulesProps) {
                     <Badge className="bg-purple-600 text-white">1</Badge>
                     <h3 className="text-purple-800 font-semibold text-sm sm:text-base">Pay Entry Fee</h3>
                   </div>
-                    <p className="text-purple-600 text-xs sm:text-sm">
-                      Entry fees are randomly generated based on the product worth. For a ₹10,000 product, entry might be ₹9-₹99. Pay to unlock all 4 rounds.
-                    </p>
+                  <p className="text-purple-600 text-xs sm:text-sm">
+                    Entry fees are randomly generated based on the product worth. For a ₹10,000 product, entry might be ₹9-₹99. Pay to unlock all 4 rounds.
+                  </p>
                 </div>
 
                 <div className="space-y-3">
@@ -157,9 +157,9 @@ export function Rules({ onBack }: RulesProps) {
             </CardContent>
           </Card>
 
-            {/* Key Rules */}
-            <Card className="bg-white border-purple-200 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b border-green-100 relative z-10">
+          {/* Key Rules */}
+          <Card className="bg-white border-purple-200 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-green-50 to-white border-b border-green-100 relative z-10">
               <CardTitle className="text-base sm:text-lg md:text-xl text-green-800 flex items-center space-x-2">
                 <IndianRupee className="w-5 h-5 sm:w-6 sm:h-6 text-green-600" />
                 <span>Key Rules</span>
@@ -217,9 +217,9 @@ export function Rules({ onBack }: RulesProps) {
             </CardContent>
           </Card>
 
-            {/* Detailed Mechanics */}
-            <Card className="bg-white border-purple-200 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b border-blue-100 relative z-10">
+          {/* Detailed Mechanics */}
+          <Card className="bg-white border-purple-200 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-blue-50 to-white border-b border-blue-100 relative z-10">
               <CardTitle className="text-base sm:text-lg md:text-xl text-blue-800 flex items-center space-x-2">
                 <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                 <span>Detailed Auction Mechanics</span>
@@ -256,12 +256,12 @@ export function Rules({ onBack }: RulesProps) {
                     <strong className="text-blue-800">Win Condition:</strong> The participant with the highest valid bid at the end of round 4 claims the prize.
                   </p>
                 </div>
-                
+
                 <div className="bg-orange-50 border-l-4 border-orange-400 p-3 sm:p-4 space-y-2 text-xs sm:text-sm mt-3">
                   <h4 className="text-orange-800 font-semibold text-sm mb-2">How Elimination Works</h4>
-                    <p className="text-orange-700">
-                      <strong className="text-orange-800">Round Ranking:</strong> After each 15-minute round, participants are ranked by their bid amount in that specific round. Bids are separate for each round and NOT cumulative.
-                    </p>
+                  <p className="text-orange-700">
+                    <strong className="text-orange-800">Round Ranking:</strong> After each 15-minute round, participants are ranked by their bid amount in that specific round. Bids are separate for each round and NOT cumulative.
+                  </p>
                   <p className="text-orange-700">
                     <strong className="text-orange-800">Survival Rule:</strong> Only the Top 3 bidders advance to the next round. All others are eliminated.
                   </p>
@@ -286,10 +286,10 @@ export function Rules({ onBack }: RulesProps) {
             </CardContent>
           </Card>
 
-            {/* Prohibited & Fair Play */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="relative overflow-hidden group">
-                <h3 className="text-red-800 font-semibold mb-3 text-sm sm:text-base flex items-center relative z-10 font-medium">
+          {/* Prohibited & Fair Play */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="relative overflow-hidden group">
+              <h3 className="text-red-800 font-semibold mb-3 text-sm sm:text-base flex items-center relative z-10 font-medium">
                 <AlertCircle className="w-4 h-4 mr-1" />
                 Prohibited Actions
               </h3>
@@ -302,8 +302,8 @@ export function Rules({ onBack }: RulesProps) {
               </div>
             </div>
 
-              <div className="relative overflow-hidden group">
-                <h3 className="text-green-800 font-semibold mb-3 text-sm sm:text-base flex items-center relative z-10 font-medium">
+            <div className="relative overflow-hidden group">
+              <h3 className="text-green-800 font-semibold mb-3 text-sm sm:text-base flex items-center relative z-10 font-medium">
                 <Sparkles className="w-4 h-4 mr-1" />
                 Fair Play Guarantee
               </h3>
@@ -324,7 +324,7 @@ export function Rules({ onBack }: RulesProps) {
               <p className="text-sm sm:text-base text-purple-600">
                 Participation is easy, fair, and fun. Join thousands of Indian players today!
               </p>
-              <Button 
+              <Button
                 onClick={onBack}
                 className="bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold px-6 py-2 hover:from-purple-500 hover:to-purple-600 shadow-lg hover:shadow-xl transition-all"
               >

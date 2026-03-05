@@ -11,10 +11,10 @@ interface TermsAndConditionsProps {
 export function TermsAndConditions({ onBack }: TermsAndConditionsProps) {
   return (
     <div className="min-h-screen bg-white relative overflow-hidden">
-      
+
 
       {/* Header with Logo */}
-      <motion.header 
+      <motion.header
         className="bg-white/95 backdrop-blur-md border-b border-purple-200 shadow-sm sticky top-0 z-50"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -38,9 +38,9 @@ export function TermsAndConditions({ onBack }: TermsAndConditionsProps) {
                 <h1 className="text-xl sm:text-2xl font-bold text-purple-800">Terms & Conditions</h1>
               </div>
             </div>
-            
+
             {/* Logo */}
-            <div 
+            <div
               className="flex items-center space-x-2 cursor-pointer"
               onClick={onBack}
             >
@@ -49,7 +49,7 @@ export function TermsAndConditions({ onBack }: TermsAndConditionsProps) {
               </div>
               <div className="hidden sm:block">
                 <h2 className="text-lg font-bold bg-gradient-to-r from-[#53317B] via-[#6B3FA0] to-[#8456BC] bg-clip-text text-transparent">Dream60</h2>
-                <p className="text-[10px] text-purple-600">Live Auction Play</p>
+                <p className="text-[10px] text-purple-600">Live Auction Platform</p>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@ export function TermsAndConditions({ onBack }: TermsAndConditionsProps) {
 
       <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 relative z-10">
         {/* Mobile Title */}
-        <motion.div 
+        <motion.div
           className="sm:hidden flex items-center space-x-2 mb-6"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -67,7 +67,7 @@ export function TermsAndConditions({ onBack }: TermsAndConditionsProps) {
           <h1 className="text-2xl font-bold text-purple-800">Terms & Conditions</h1>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="max-w-4xl mx-auto space-y-4 sm:space-y-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ export function TermsAndConditions({ onBack }: TermsAndConditionsProps) {
                 <div>
                   <h3 className="text-lg sm:text-xl font-semibold text-purple-800 mb-2">Important Notice</h3>
                   <p className="text-sm sm:text-base text-purple-700">
-                    By participating in Dream60 auctions, you agree to these terms and conditions. 
+                    By participating in Dream60 auctions, you agree to these terms and conditions.
                     Please read carefully before placing any bids.
                   </p>
                 </div>
